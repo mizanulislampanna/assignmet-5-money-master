@@ -45,13 +45,19 @@ document.getElementById('calculate-btn').addEventListener('click', function(){
     const totalExpences = food + rent + cloths;
     const balance = income - totalExpences;
 
-    if(isNaN(totalExpences)==false && totalExpences>0){
-        // total expenses output
-        setInnerText('total-expenses',totalExpences);
+    if(income<totalExpences){
+        getErrors('balance-warning',true)
     }
-    if(isNaN(balance)==false && balance>0){
-    //balance output
-    setInnerText('balance',balance); 
+    else{
+        if(isNaN(totalExpences)==false && totalExpences>0){
+            // total expenses output
+            setInnerText('total-expenses',totalExpences);
+        }
+        if(isNaN(balance)==false && balance>0 && totalExpences>0){
+        //balance output
+        setInnerText('balance',balance); 
+        }
+        getErrors('balance-warning',false)
     }
 
     //calling function for inputs errors
@@ -68,7 +74,7 @@ document.getElementById('save-btn').addEventListener('click',function(){
     const saveAmount = (income/100) * save ;
     const balance = document.getElementById('balance').innerText;
     // error hanldeling for balence & saving
-    if(balance>saveAmount){
+    if(balance>=saveAmount && save>0){
         const remainningBalence = balance - saveAmount;
     // saving output
     setInnerText('saving-amount',saveAmount);
@@ -77,5 +83,6 @@ document.getElementById('save-btn').addEventListener('click',function(){
     }
     else{
         getErrors('saving-warning',true);
-    }  
+    }
+    isError(save,'saving-number-error');  
 });
