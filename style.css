@@ -18,3 +18,10 @@ border-radius: 3px;
 .custom-btn{
     background-color: #59A5FF;
 }
+/*=============
+ error Massages
+ ============== */
+ .custom-warning{
+     display: none;
+    margin-right: 45px;
+ }

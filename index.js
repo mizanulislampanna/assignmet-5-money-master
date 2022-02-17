@@ -18,6 +18,23 @@ function setInnerText(element, text){
     const balanceText = document.getElementById(element);
     balanceText.innerText = text;
 };
+// common function for errors 
+function getErrors(elements,condition){
+    if(condition==true){
+        document.getElementById(elements).style.display ='block';
+    }
+    else{
+        document.getElementById(elements).style.display ='none';
+    }
+};
+// common functions of input errors 
+    function isError(element,error){
+        if(isNaN(element) == true || element < 0){
+           getErrors(error,true); 
+        }
+        else{getErrors(error,false)}
+    };
+
 // event add on calculate button 
 document.getElementById('calculate-btn').addEventListener('click', function(){
    const income = getIncomeValue('income-input');
@@ -28,10 +45,20 @@ document.getElementById('calculate-btn').addEventListener('click', function(){
     const totalExpences = food + rent + cloths;
     const balance = income - totalExpences;
 
-    // total expenses output
-    setInnerText('total-expenses',totalExpences);
+    if(isNaN(totalExpences)==false && totalExpences>0){
+        // total expenses output
+        setInnerText('total-expenses',totalExpences);
+    }
+    if(isNaN(balance)==false && balance>0){
     //balance output
-    setInnerText('balance',balance);
+    setInnerText('balance',balance); 
+    }
+
+    //calling function for inputs errors
+    isError(income,'income-number-error');
+    isError(food,'food-number-error');
+    isError(rent,'rent-number-error');
+    isError(cloths,'cloths-number-error');
 });
 
 // event add on save button
@@ -39,8 +66,16 @@ document.getElementById('save-btn').addEventListener('click',function(){
     const income = getIncomeValue('income-input');
     const save = getInputValue('save-input');
     const saveAmount = (income/100) * save ;
-    const remainningBalence = income - saveAmount;
+    const balance = document.getElementById('balance').innerText;
+    // error hanldeling for balence & saving
+    if(balance>saveAmount){
+        const remainningBalence = balance - saveAmount;
     // saving output
     setInnerText('saving-amount',saveAmount);
     setInnerText('remainning-balance',remainningBalence);
-})
+    getErrors('saving-warning',false);
+    }
+    else{
+        getErrors('saving-warning',true);
+    }  
+});
